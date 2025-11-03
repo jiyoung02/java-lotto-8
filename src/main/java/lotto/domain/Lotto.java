@@ -1,4 +1,4 @@
-package lotto;
+package lotto.domain;
 
 import java.util.List;
 
@@ -22,5 +22,11 @@ public class Lotto {
 
     public void printLotto() {
         System.out.println(numbers);
+    }
+
+    public long matchCountWith(Lotto other) {
+        return numbers.stream()
+                .filter(other.numbers::contains)
+                .count();
     }
 }

@@ -1,4 +1,4 @@
-package lotto;
+package lotto.domain;
 
 import java.util.List;
 
@@ -10,5 +10,9 @@ public class WinningLotto {
         this.winningNumbers = new Lotto(numbers);
         this.bonusNumber = bonusNumber;
     }
-
+    public LottoResult evaluate(Lotto lotto) {
+        int matched = (int) lotto.matchCountWith(winningNumbers);
+        boolean bonusMatched = lotto.hasNumber(bonusNumber);
+        return LottoResult.of(matched, bonusMatched);
+    }
 }

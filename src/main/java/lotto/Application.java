@@ -1,7 +1,7 @@
 package lotto;
 
+import lotto.domain.LottoService;
 import lotto.view.InputView;
-import lotto.view.OutputView;
 
 public class Application {
     private final static LottoService lottoService = new LottoService();
@@ -10,10 +10,16 @@ public class Application {
         int amount = InputView.readPurchaseAmount();
         lottoService.purchase(amount);
 
+        // 당첨 로또 설정
         lottoService.prepareWinningLotto(
                 InputView.readWinningNumbers(),
                 InputView.readBonusNumber()
         );
+
+        // 당첨 여부 확인
+        lottoService.evaluateResults();
+
+
 
 
     }
