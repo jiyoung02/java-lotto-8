@@ -7,6 +7,8 @@ import lotto.view.OutputView;
 
 public class LottoService {
     private  final List<Lotto> purchased = new ArrayList<>();
+    private WinningLotto winning;
+
     public  void purchase(int amount) {
         int count = amount / 1000;
         OutputView.printLottoNum(count);
@@ -20,5 +22,9 @@ public class LottoService {
     private  Lotto createRandomLotto() {
         List<Integer> numbers = Randoms.pickUniqueNumbersInRange(1, 45, 6);
         return new Lotto(numbers);
+    }
+
+    public void prepareWinningLotto(List<Integer> numbers, int bonusNumber) {
+        this.winning = new WinningLotto(numbers, bonusNumber);
     }
 }
