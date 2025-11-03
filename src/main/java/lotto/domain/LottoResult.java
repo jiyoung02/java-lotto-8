@@ -12,19 +12,16 @@ public class LottoResult {
     }
 
 
-    void record(LottoRank rank) {
-        summary.put(rank, summary.getOrDefault(rank, 0) + 1);
-    }
 
     public Map<LottoRank, Integer> summary() {
         return Map.copyOf(summary);
     }
 
-    public double profitRate(int totalCount) {
+    public double profitRate(int amount) {
         double prize = summary.entrySet().stream()
                 .mapToDouble(e -> e.getKey().prizeMoney() * e.getValue())
                 .sum();
-        return prize / (totalCount * 1000.0) * 100;
+        return prize / amount  * 100;
     }
 
 }
