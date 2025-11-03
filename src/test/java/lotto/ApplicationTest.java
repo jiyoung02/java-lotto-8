@@ -1,6 +1,7 @@
 package lotto;
 
 import camp.nextstep.edu.missionutils.test.NsTest;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 import static camp.nextstep.edu.missionutils.test.Assertions.assertRandomUniqueNumbersInRangeTest;
 import static camp.nextstep.edu.missionutils.test.Assertions.assertSimpleTest;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ApplicationTest extends NsTest {
     private static final String ERROR_MESSAGE = "[ERROR]";
@@ -53,7 +55,23 @@ class ApplicationTest extends NsTest {
             assertThat(output()).contains(ERROR_MESSAGE);
         });
     }
+    @DisplayName("구매 금액이 1000원 미만이면 예외가 발생한다.")
+    @Test
+    void 구매금액_1000미만_예외() {
+        assertSimpleTest(() -> {
+            runException("500");
+            assertThat(output()).contains(ERROR_MESSAGE);
+        });
+    }
 
+    @DisplayName("구매 금액이 1000원 단위로 나누어 떨어지지 않으면 예외가 발생한다.")
+    @Test
+    void 구매금액_단위_예외() {
+        assertSimpleTest(() -> {
+            runException("1500");
+            assertThat(output()).contains(ERROR_MESSAGE);
+        });
+    }
     @Override
     public void runMain() {
         Application.main(new String[]{});
