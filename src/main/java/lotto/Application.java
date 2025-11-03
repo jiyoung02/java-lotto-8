@@ -1,7 +1,12 @@
 package lotto;
 
+import lotto.view.InputView;
+import lotto.view.OutputView;
+
 public class Application {
+    private final static LottoService lottoService = new LottoService();
     public static void main(String[] args) {
-        // TODO: 프로그램 구현
+        int amount = InputView.readPurchaseAmount();
+        lottoService.purchase(amount);
     }
 }
