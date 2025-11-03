@@ -1,44 +1,30 @@
 package lotto.domain;
 
+import java.util.EnumMap;
 import java.util.Map;
 
-public enum LottoResult {
-    FIRST(6, false, 2_000_000_000, "6개 일치 (2,000,000,000원)"),
-    SECOND(5, true, 30_000_000, "5개 일치, 보너스 볼 일치 (30,000,000원)"),
-    THIRD(5, false, 1_500_000, "5개 일치 (1,500,000원)"),
-    FOURTH(4, false, 50_000, "4개 일치 (50,000원)"),
-    FIFTH(3, false, 5_000, "3개 일치 (5,000원)"),
-    NONE(0, false, 0, "");
-
-    private final int matchCount;
-    private final boolean bonusMatch;
-    private final int prize;
-    private final String message;
-
-    LottoResult(int matchCount, boolean bonusMatch, int prize, String message) {
-        this.matchCount = matchCount;
-        this.bonusMatch = bonusMatch;
-        this.prize = prize;
-        this.message = message;
+public class LottoResult {
+    private final Map<LottoRank, Integer> summary;
+    public LottoResult(Map<LottoRank, Integer> stats) {
+        // EnumMap으로 복사 (LottoRank 키 전용)
+        this.summary = new EnumMap<>(LottoRank.class);
+        this.summary.putAll(stats);
     }
 
-    public static LottoResult of(int matchCount, boolean bonusMatched) {
-        if (matchCount == 6) return FIRST;
-        if (matchCount == 5 && bonusMatched) return SECOND;
-        if (matchCount == 5) return THIRD;
-        if (matchCount == 4) return FOURTH;
-        if (matchCount == 3) return FIFTH;
-        return NONE;
+
+    void record(LottoRank rank) {
+        summary.put(rank, summary.getOrDefault(rank, 0) + 1);
     }
 
-    public int calculatePrize(int count) {
-        return prize * count;
+    public Map<LottoRank, Integer> summary() {
+        return Map.copyOf(summary);
     }
 
-    public static void printAll(Map<LottoResult, Integer> summary) {
-        for (LottoResult result : values()) {
-            if (result == NONE) continue;
-            System.out.println(result.message + " - " + summary.getOrDefault(result, 0) + "개");
-        }
+    public double profitRate(int totalCount) {
+        double prize = summary.entrySet().stream()
+                .mapToDouble(e -> e.getKey().prizeMoney() * e.getValue())
+                .sum();
+        return prize / (totalCount * 1000.0) * 100;
     }
+
 }

@@ -1,7 +1,9 @@
 package lotto;
 
+import lotto.domain.LottoResult;
 import lotto.domain.LottoService;
 import lotto.view.InputView;
+import lotto.view.OutputView;
 
 public class Application {
     private final static LottoService lottoService = new LottoService();
@@ -17,9 +19,12 @@ public class Application {
         );
 
         // 당첨 여부 확인
-        lottoService.evaluateResults();
+        LottoResult result= lottoService.evaluateResults();
 
-
+        // 결과 출력
+        OutputView.printResult(result);
+        double rate = result.profitRate(amount);
+        OutputView.printProfitRate(rate);
 
 
     }
